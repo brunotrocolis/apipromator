@@ -1,7 +1,6 @@
 package com.trocolis.api.promator.model.dto.product.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 

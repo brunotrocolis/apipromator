@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Classe que implemanta as regras de negócio relacionadas aos produtos
@@ -29,6 +30,8 @@ public class ProductService {
     @Autowired
     private ProductDao productDao;
 
+    private static final Logger LOGGER = Logger.getLogger(ProductService.class.getName());
+
     /**
      * Este método cadastra novos produtos
      *
@@ -37,6 +40,8 @@ public class ProductService {
      */
     public RegisterProductResponse registerProduct(RegisterProductRequest request) {
         var product = new Product();
+
+        LOGGER.info(request.toString());
 
         BeanUtils.copyProperties(request, product);
 
@@ -55,13 +60,13 @@ public class ProductService {
      * @return Lista com todos os produtos
      */
     public List<ProductDTO> getAll() {
+        LOGGER.info("Consultando todos os produtos");
         return productRepository.getAll();
     }
 
     /**
      * Este método busca produtos por palavra chame e/ou faixa de preço
      *
-     * @param request
      * @return Lista de produtos
      */
     public List<ProductDTO> searchProducts(SearchProductRequest request) {

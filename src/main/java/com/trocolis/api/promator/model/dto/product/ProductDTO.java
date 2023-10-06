@@ -1,5 +1,8 @@
 package com.trocolis.api.promator.model.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.trocolis.api.promator.model.domain.ProductStatusDomain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,11 +25,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
+
     private UUID id;
+
     private String name;
+
     private String description;
+
     private BigDecimal price;
+
     private ProductStatusDomain status;
+
     private byte[] image;
+
+    @JsonProperty("creation_date_time")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime creationDateTime;
 }

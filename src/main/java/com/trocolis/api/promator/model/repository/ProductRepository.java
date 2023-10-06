@@ -1,11 +1,9 @@
 package com.trocolis.api.promator.model.repository;
 
 import com.trocolis.api.promator.model.dto.product.ProductDTO;
-import com.trocolis.api.promator.model.dto.product.request.SearchProductRequest;
 import com.trocolis.api.promator.model.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
