@@ -28,12 +28,21 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(nullable = false, length = 500)
     private String description;
+
+    @Column(nullable = false)
     private BigDecimal price;
+
     @Enumerated(EnumType.STRING)
-    private ProductStatusDomain status;
+    @Column(nullable = false, length = 10)
+    private ProductStatusDomain status = ProductStatusDomain.INACTIVE;
+    
     private byte[] image;
-    @Column(name = "creation_date_time")
-    private LocalDateTime creationDateTime;
+    @Column(name = "creation_date_time", nullable = false)
+    private LocalDateTime creationDateTime = LocalDateTime.now();
 }

@@ -1,18 +1,20 @@
 package com.trocolis.api.promator.model.dto.product.request;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class SearchProductRequest {
-    private String keyword;
-    private BigDecimal minPrice;
-    private BigDecimal maxPrice;
+/**
+ * Esta classe representa um DTO de requisição de busca por produtos
+ *
+ * @author Bruno Trócolis <bruno.trocolis at gmail.com>
+ * @since 2023
+ */
+public record SearchProductRequest(
+        @NotBlank
+        String keyword,
+        BigDecimal minPrice,
+        BigDecimal maxPrice
+) {
 }
