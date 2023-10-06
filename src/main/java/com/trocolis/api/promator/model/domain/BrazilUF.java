@@ -1,0 +1,46 @@
+package com.trocolis.api.promator.model.domain;
+
+public enum BrazilUF {
+    AC("AC"),
+    AL("AL"),
+    AM("AM"),
+    AP("AP"),
+    BA("BA"),
+    CE("CE"),
+    DF("DF"),
+    ES("ES"),
+    GO("GO"),
+    MA("MA"),
+    MG("MG"),
+    MS("MS"),
+    MT("MT"),
+    PA("PA"),
+    PB("PB"),
+    PE("PE"),
+    PI("PI"),
+    PR("PR"),
+    RJ("RJ"),
+    RN("RN"),
+    RO("RO"),
+    RR("RR"),
+    RS("RS"),
+    SC("SC"),
+    SE("SE"),
+    SP("SP"),
+    TO("TO"),
+    UNDEFINED("UNDEFINED");
+
+
+
+
+    private final String uf;
+
+    BrazilUF(String uf) {
+        this.uf = uf;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+}
