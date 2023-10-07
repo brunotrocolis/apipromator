@@ -43,6 +43,7 @@ public class Product {
     private ProductStatusDomain status = ProductStatusDomain.INACTIVE;
     
     private byte[] image;
+
     @Column(name = "creation_date_time", nullable = false)
     private LocalDateTime creationDateTime = LocalDateTime.now();
 }
