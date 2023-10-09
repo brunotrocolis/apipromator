@@ -6,7 +6,10 @@
 - [Banco de dados](#banco-de-dados)
     - [Servidor](#servidor)
     - [Tabelas](#tabelas)
-- [Métodos](#serviços)
+        - [Produtos](#produtos)
+- [Métodos](#métodos)
+    - [Produtos](#produtos-1)
+        - [Cadastrar produto](#cadastrar-produto)
 
 ## Descrição
 
@@ -51,7 +54,7 @@
 
 <p>Este método é responsável pelo cadastro de novos produtos na basa de dados.</p>
 
-```POST: {servidor}/api/v1/produto```
+```POST: {server}/api/v1/produto```
 
 ##### Request: RegisterProductRequest
 
@@ -95,4 +98,45 @@
     "image": null,
     "creationDateTime": "2023-10-06 15:37:48"
 }
+```
+
+#### Listar todos os produtos (Administrativo)
+
+<p>Consulta todos os produtros cadastrados no banco de dados, para fins de teste</p>
+
+```GET: {server}/api/v1/product```
+
+##### Response: List\<ProductDTO\>
+| Campo              | Tipo          | Obrigatório | Descrição            |
+|--------------------|---------------|-------------|----------------------|
+| id                 | String        | Sim         | Nome do produto      |
+| name               | String        | Sim         | Nome do produto      |
+| description        | String        | Sim         | Descrição do produto |
+| price              | BigDecimal    | Sim         | Preço do Produto     |
+| image              | Image         | Não         | Imagem do produto    |
+| creation_date_time | LocalDateTime | Sim         | Nome do produto      |
+
+- Exemplo:
+
+```json
+[
+  {
+    "id": "99103fd8-c3a4-43aa-ad2d-8bf7f9f36773",
+    "name": "Foo",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "price": 15.99,
+    "status": "ACTIVE",
+    "image": null,
+    "creationDateTime": "2023-10-06 15:37:48"
+  },
+  {
+    "id": "99103fd8-c3a4-43aa-ad2d-8bf7f9f36773",
+    "name": "Bar",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "price": 1.99,
+    "status": "INACTIVE",
+    "image": null,
+    "creationDateTime": "2023-03-17 12:33:15"
+  }
+]
 ```

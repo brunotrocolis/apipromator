@@ -1,6 +1,6 @@
 package com.trocolis.api.promator.model.entity;
 
-import com.trocolis.api.promator.model.domain.ProductStatusDomain;
+import com.trocolis.api.promator.model.domain.product.ProductStatusDomain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -20,15 +20,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    /**
+     * Registra um produto.
+     *
+     * @param request O corpo da requisição contendo os detalhes do produto a ser registrado.
+     * @return ResponseEntity com a resposta do registro do produto.
+     */
     @PostMapping
-    public ResponseEntity<RegisterProductResponse> registerProduct(
-            @RequestBody
-            @Valid
-            RegisterProductRequest request
-    ) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(productService.registerProduct(request));
+    public ResponseEntity<RegisterProductResponse> registerProduct(@RequestBody @Valid RegisterProductRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.registerProduct(request));
     }
 
     @GetMapping
