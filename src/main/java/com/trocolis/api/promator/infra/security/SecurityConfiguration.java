@@ -1,4 +1,4 @@
-package com.trocolis.api.promator.config.security;
+package com.trocolis.api.promator.infra.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

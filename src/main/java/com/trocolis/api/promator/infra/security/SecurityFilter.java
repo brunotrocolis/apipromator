@@ -1,7 +1,7 @@
-package com.trocolis.api.promator.config.security;
+package com.trocolis.api.promator.infra.security;
 
-import com.trocolis.api.promator.model.dto.user.UserAuthDTO;
-import com.trocolis.api.promator.service.UserDetailsServiceImpl;
+import com.trocolis.api.promator.service.TokenService;
+import com.trocolis.api.promator.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +18,13 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    private final UserDetailsServiceImpl authService;
+    private final TokenService tokenService;
+    private final UserService userService;
 
-    public SecurityFilter(@Autowired UserDetailsServiceImpl authService) {
-        this.authService = authService;
+    public SecurityFilter(@Autowired UserService userService,
+                         @Autowired TokenService tokenService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -29,8 +32,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = getToken(request);
 
         if (token != null) {
-            var email = authService.validateToken(token);
-            UserDetails user = authService.loadUserByUsername(email);
+            var email = tokenService.validateToken(token);
+            UserDetails user = userService.loadUserByUsername(email);
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

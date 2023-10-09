@@ -1,35 +1,38 @@
 package com.trocolis.api.promator.service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.trocolis.api.promator.model.domain.user.CredentialStatusDomain;
 import com.trocolis.api.promator.model.domain.user.UserStatusDomain;
+import com.trocolis.api.promator.model.dto.auth.request.ConfirmationRequest;
+import com.trocolis.api.promator.model.dto.auth.request.RegisterRequest;
 import com.trocolis.api.promator.model.dto.user.UserAuthDTO;
+import com.trocolis.api.promator.model.entity.Credential;
 import com.trocolis.api.promator.model.entity.User;
 import com.trocolis.api.promator.model.repository.CredentialRepository;
 import com.trocolis.api.promator.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final CredentialRepository credentialRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserDetailsServiceImpl(@Autowired UserRepository userRepository, @Autowired CredentialRepository credentialRepository) {
+    public UserService(@Autowired UserRepository userRepository,
+                       @Autowired CredentialRepository credentialRepository,
+                       @Autowired BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.credentialRepository = credentialRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -46,29 +49,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         );
     }
 
-    @Value("${api.security.token.secret}")
-    private String secret;
+    public UUID geristerUser(RegisterRequest request) {
+        var user = userRepository.findByEmail(request.email());
 
-    public String generateToken(UserAuthDTO user) {
-        Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-        return JWT.create()
-                .withIssuer("auth.api")
-                .withSubject(user.getUsername())
-                .withExpiresAt(getExpirationDate())
-                .sign(algorithm);
+        // TODO: Validar de o e-mail já existe na base
+        if (user != null) {
+            return null;
+        }
+
+        user = userRepository.save(new User(request.name(), request.email(), request.birthDate()));
+        return user.getId();
     }
 
-    public String validateToken(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-        return JWT.require(algorithm)
-                .withIssuer("auth.api")
-                .build()
-                .verify(token)
-                .getSubject();
+    public UUID activateUser(ConfirmationRequest request) {
+        var user = userRepository.findById(request.userId());
 
-    }
+        // TODO: Validar de o usuário existe
+        if (user.isEmpty()) {
+            return null;
+        }
 
-    private Instant getExpirationDate() {
-        return Instant.now().plus(1, ChronoUnit.HOURS);
+        user.get().setStatus(UserStatusDomain.ACTIVE);
+
+        var out = userRepository.save(user.get());
+
+        var encryptedPassword = passwordEncoder.encode(request.password());
+        credentialRepository.save(new Credential(request.userId(), encryptedPassword));
+
+        return out.getId();
+
     }
 }
