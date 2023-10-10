@@ -14,4 +14,5 @@ public interface CredentialRepository extends JpaRepository<Credential, Credenti
 
     @Query("FROM Credential WHERE userId = :userId ORDER BY sequence DESC")
     Credential findCredentialsByUserId(UUID userId);
+
 }

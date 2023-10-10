@@ -1,5 +1,6 @@
 package com.trocolis.api.promator.controller;
 
+import com.trocolis.api.promator.infra.error.exception.BusinessException;
 import com.trocolis.api.promator.model.dto.auth.request.ConfirmationRequest;
 import com.trocolis.api.promator.model.dto.auth.request.LoginRequest;
 import com.trocolis.api.promator.model.dto.auth.request.RegisterRequest;
@@ -29,17 +30,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest request) throws BusinessException {
         return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UUID> register(@RequestBody @Valid RegisterRequest request) {
+    public ResponseEntity<UUID> register(@RequestBody @Valid RegisterRequest request) throws BusinessException {
         return ResponseEntity.ok(userService.geristerUser(request));
     }
 
     @PostMapping("/confirmation")
-    public ResponseEntity<UUID> confirmation(@RequestBody @Valid ConfirmationRequest request) {
+    public ResponseEntity<UUID> confirmation(@RequestBody @Valid ConfirmationRequest request) throws BusinessException {
         return ResponseEntity.ok(userService.activateUser(request));
     }
 }
